@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FormEventHandler } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ApplicationState } from './store';
+import { addItem, delItem } from './store/ducks/todo/actions';
 
 function App() {
+
+  const dispatch = useDispatch();
+  const todo = useSelector((state: ApplicationState) => state.todo);
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    dispatch(addItem(e.target.item.value))
+  }
+
+  const handleRemove = (e:any) => {
+    e.preventDefault();
+    dispatch(delItem(e.target.item.value))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <form onSubmit={handleSubmit}>
+        <input name="item" type="text"/>
+        <button type="submit">Adicionar</button>
+      </form>
+      <button onClick={handleRemove}>remover</button>
+
+      <ul>
+        {
+          todo.items.map((name) => <li>{name}</li>)
+        }
+      </ul>
+
     </div>
   );
 }
