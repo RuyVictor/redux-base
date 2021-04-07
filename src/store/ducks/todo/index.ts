@@ -12,7 +12,9 @@ const reducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {
     case TodoTypes.ADD_ITEM:
       return { items: [...state.items, action.payload.name] };
     case TodoTypes.DEL_ITEM:
-      return { items: [delete state.items[state.items.indexOf(action.payload.name)]] };
+      return { items: state.items.filter(item => item !== action.payload.name) };
+    case TodoTypes.UPDATE_ITEM:
+      return { items: [...state.items.filter(item => item !== action.payload.name), state.items[state.items.indexOf(action.payload.name)] = 'a'] }
     default:
       return { ...state };
   }
